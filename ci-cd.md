@@ -7,6 +7,8 @@ GitHub Actions 是 GitHub 自带的持续集成 / 持续交付（CI/CD）服务�
 
 ## 核心概念
 
+### 基本元素
+
 | 概念 | 含义 |
 | --- | --- |
 | workflow（工作流） | 一次自动化流程，对应一个 YAML 文件 |
@@ -22,19 +24,7 @@ GitHub Actions 是 GitHub 自带的持续集成 / 持续交付（CI/CD）服务�
 * job 之间默认并行，用 `needs` 声明依赖顺序。
 * action 可以被别人引用，引用格式是 `owner/repo@版本`，例如 `actions/setup-node@v4`。
 
-## 文件位置
-
-workflow 文件放在仓库根目录的 `.github/workflows/` 下，后缀 `.yml` 或 `.yaml`，文件名随意。一个仓库可以有多个 workflow 文件，GitHub 发现就会按各自的事件触发。
-
-```
-项目根目录
-└── .github
-    └── workflows
-        ├── ci.yml
-        └── deploy.yml
-```
-
-## 最小示例
+### 最小示例
 
 ```yaml
 name: Hello CI
@@ -61,7 +51,7 @@ jobs:
 
 `${{ }}` 里是表达式，`github` 是上下文对象，常用的有 `github.ref_name`（分支名）、`github.sha`、`github.event_name`（事件名）、`github.repository`。
 
-## 触发方式
+### 触发方式
 
 ```yaml
 on:
@@ -80,6 +70,26 @@ on:
 * `schedule` 的 cron 是 UTC，北京时间要减 8 小时换算。
 * 用 `workflow_dispatch` 可以在 Actions 页面手动触发并填参数。
 * `pull_request` 默认只对"目标分支是本仓库分支"的 PR 生效，来自 fork 的 PR 拿不到 secrets，这是安全设计。
+
+## 项目架构
+
+### 本地文件位置
+
+workflow 文件放在仓库根目录的 `.github/workflows/` 下，后缀 `.yml` 或 `.yaml`，文件名随意。一个仓库可以有多个 workflow 文件，GitHub 发现就会按各自的事件触发。
+
+```
+项目根目录
+└── .github
+    └── workflows
+        ├── ci.yml
+        └── deploy.yml
+```
+
+### GitHub 查看位置
+
+可在 GitHub 仓库的 Actions 页面查看 workflow 运行情况，点进某次运行可以看到每个 job 的日志。
+
+
 
 ## 一个 Java / Maven 的完整例子
 
